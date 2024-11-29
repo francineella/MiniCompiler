@@ -142,7 +142,7 @@ function syntaxAnalyzer() {
             if (
                 tokens[0] === 'data_type' &&
                 tokens[1] === 'identifier' &&
-                tokens[2] === 'assignment_operator' &&
+                tokens[2] === 'assign' &&
                 tokens[3] === 'value' &&
                 tokens[4] === 'delimiter'
             ) {

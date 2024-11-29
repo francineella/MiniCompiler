@@ -238,7 +238,7 @@ function semanticAnalyzer() {
     }
 }
 
-function tokenize(line) {
+/* function tokenize(line) {
     const tokens = [];
     const words = line.split(/\s+/);
     
@@ -261,7 +261,7 @@ function tokenize(line) {
     }
     
     return tokens;
-}
+} */
 
 function isValue(word) {
     return (

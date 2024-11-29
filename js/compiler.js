@@ -69,41 +69,16 @@ function lexicalAnalyzer() {
     tokenList = '';
     let isValid = true;
 
-    function tokenize(line) {
-        const tokens = [];
-        const words = line.split(/\s+/); // Split line into words by whitespace
-        
-        for (const word of words) {
-            if (!word) continue; // Skip empty strings
-            
-            if (TOKENS.DATA_TYPES.includes(word)) { // Check if it's a valid data type
-                tokens.push({ type: 'data_types', value: word });
-            } else if (word === TOKENS.ASSIGN) { // Check if it's an assignment operator
-                tokens.push({ type: 'assign', value: word });
-            } else if (word === TOKENS.SEMICOLON) { // Check if it's a semicolon (delimiter)
-                tokens.push({ type: 'delimiter', value: word });
-            } else if (TOKENS.PATTERNS.INTEGER.test(word)) { // Check if it's an integer value
-                tokens.push({ type: 'integer', value: word });
-            } else if (TOKENS.PATTERNS.DOUBLE.test(word)) { // Check if it's a double value
-                tokens.push({ type: 'double', value: word });
-            } else if (TOKENS.PATTERNS.STRING.test(word)) { // Check if it's a string value
-                tokens.push({ type: 'string', value: word });
-            } else if (TOKENS.PATTERNS.CHAR.test(word)) { // Check if it's a char value
-                tokens.push({ type: 'char', value: word });
-            } else if (TOKENS.PATTERNS.BOOLEAN.test(word)) { // Check if it's a boolean value
-                tokens.push({ type: 'boolean', value: word });
-            } else if (TOKENS.PATTERNS.IDENTIFIER.test(word)) { // Check if it's a valid identifier
-                tokens.push({ type: 'identifier', value: word });
-            } else {
-                // If none of the above, it's an invalid token
-                showOutput(`Invalid token found: "${word}"`);
-                return null;
-            }
+    const lines = code.split('\n');
+    for(const line of lines) {
+        const tokens = tokenize(line.trim());
+        if (!tokens) {
+            isValid = false;
+            break
         }
-        return tokens;
+
+        tokenList += tokens.map(token => token.type + "|" + token.value).join('|') + "\n"; 
     }
-
-
 
     if (isValid) {
         lexicalPassed = true;
@@ -129,15 +104,12 @@ function syntaxAnalyzer() {
 
     for (const line of lines) {
         // Check each line of tokens
-        const tokens = line.trim().split(' ');
-
-        if (tokens.length === 5 && validatePattern(tokens, 'data_types','identifier','assign','value','delimiter')) {
-            // Pattern: data_type identifier assignment_operator value delimiter
-        } else if (tokens.length === 3 && validatePattern(tokens, 'data_types', 'identifier', 'delimiter')) {
-            // Pattern: data_type identifier delimiter
+        const tokens = line.split('|').filter(token => token.trimEnd());
+        if (tokens.length === 5 && validatePattern(tokens, 'data_type','identifier','assignment_operator','value','delimiter')) {
+            continue;
+        } else if (tokens.length === 3 && validatePattern(tokens, 'data_type', 'identifier', 'delimiter')) {
                 continue; // Syntax is valid for this pattern
         } else {
-            // Invalid token sequence length
             isValid = false;
             break;
         }
@@ -163,14 +135,14 @@ function semanticAnalyzer() {
 
     let isValid = true;
 
-    for (const line of tokenList.split('\n')) {
+    for (const line of tokenList.split('\n').filter(line => line.trim())) {
         const tokens = line.split('|').filter(token => token.trim()); // Extract tokens
         if (tokens.length >= 4) {
-            const [data_types, identifier, assign, value] = tokens;
+            const [data_type, identifier, assignmment_operator, value] = tokens;
 
-            if (assign === '=') {
-                if (!isValueMatchingType(data_types, value)) {
-                    showOutput(`Semantic Error: ${value} is not valid for type ${data_types}`);
+            if (assignmment_operator === '=') {
+                if (!isValueMatchingType(data_type, value)) {
+                    showOutput(`Semantic Error: ${value} is not valid for type ${data_type}`);
                     isValid = false;
                     break;
                 }
@@ -180,7 +152,7 @@ function semanticAnalyzer() {
                 break;
             }
         } else if (tokens.length === 3) {
-            const [data_types, identifier, delimiter] = tokens;
+            const [data_type, identifier, delimiter] = tokens;
             if (delimiter !== ';') {
                 showOutput(`Semantic Error: Missing semicolon for ${identifier}`);
                 isValid = false;
@@ -250,7 +222,7 @@ function isValueMatchingType(dataType, value) {
 }
 
 function validatePattern(tokens, ...expectedTypes) {
-    return expectedtypes.every((type, index) => tokens[index] === type);
+    return expectedTypes.every((type, index) => tokens[index] === type);
 }
 
 function clearAll() {

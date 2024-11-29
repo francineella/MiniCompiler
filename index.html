@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Compiler</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>My Compiler</h1>
+        </header>
+        <main class="content">
+            <aside class="sidebar">
+                    <div class="compiler-controls">
+                        <div>
+                            <button class="btn compiler-btn" id="openFileBtn">Open File</button>
+                            <button class="btn compiler-btn" id="lexicalBtn">Lexical Analysis</button>
+                            <button class="btn compiler-btn" id="syntaxBtn" disabled>Syntax Analysis</button>
+                            <button class="btn compiler-btn" id="semanticBtn" disabled>Semantic Analysis</button>
+                            <button class="btn compiler-btn" id="clearBtn">Clear</button>
+                        </div>
+                    </div>
+            </aside>
+            <section class="main">
+                <textarea class="code-input" id="codeInput" placeholder="Enter your code here..."></textarea>
+                <div class="output-area" id="output"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/compiler.js"></script>
+</body>
+</html>

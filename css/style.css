@@ -1,0 +1,91 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    background-color: #986ad1;
+    color: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    background-color: #f1f1f1;
+    padding: 10px 24px;
+    width: 200px;
+}
+
+.compiler-controls {
+    margin: 5px;
+    padding: 10px 24px;
+    display: flex;
+    background-color: whitesmoke;
+    justify-content: flex-end;
+    align-items: center;
+   }
+
+.btn {
+    margin: 5px;     
+    padding: 10px 24px;     
+    width: 100%;     
+    display: block;     
+    background-color: #986ad1;     
+    border: 2px solid #333;     
+    border-radius: 8px;     
+    align-items: center;     
+    font-size: 12px;     
+    transition-duration: 0.4s; 
+}
+
+.btn:hover {
+    background-color: #986ad1;
+    color: #36086e;
+  }
+
+.btn .disableButton {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+
+.main {
+    flex: 1;
+    padding: 10px;
+}
+
+.code-input {
+    width: 75%;
+    height: 200px;
+    font-family: monospace;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.output-area {
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    min-height: 100px;
+}
+@media (max-width: 600px) {
+    .content {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: auto;
+    }
+}

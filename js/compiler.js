@@ -187,7 +187,7 @@ function semanticAnalyzer() {
         return;
     }
 
-    for (const line of lines) {
+    for (const line of line) {
         const tokens = line.split('|').filter(token => token.trim()); // Extract tokens
         if (tokens.length >= 4) {
             // Format: data_type | identifier | assignment_operator | value

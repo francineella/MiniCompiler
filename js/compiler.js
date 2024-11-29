@@ -196,45 +196,14 @@ function semanticAnalyzer() {
             const assignmentOp = tokens[2]; // e.g., =
             const value = tokens[3]; // e.g., 10
 
-            // Check semantics using if-else
             if (assignmentOp === '=') {
-                if (dataType === 'int') {
-                    if (!TOKENS.PATTERNS.INTEGER.test(value)) {
-                        console.error(`Semantic Error: ${value} is not a valid int`);
-                        isValid = false;
-                        break;
-                    }
-                } else if (dataType === 'double') {
-                    if (!TOKENS.PATTERNS.DOUBLE.test(value)) {
-                        console.error(`Semantic Error: ${value} is not a valid double`);
-                        isValid = false;
-                        break;
-                    }
-                } else if (dataType === 'char') {
-                    if (!TOKENS.PATTERNS.CHAR.test(value)) {
-                        console.error(`Semantic Error: ${value} is not a valid char`);
-                        isValid = false;
-                        break;
-                    }
-                } else if (dataType === 'String') {
-                    if (!TOKENS.PATTERNS.STRING.test(value)) {
-                        console.error(`Semantic Error: ${value} is not a valid String`);
-                        isValid = false;
-                        break;
-                    }
-                } else if (dataType === 'boolean') {
-                    if (!TOKENS.PATTERNS.BOOLEAN.test(value)) {
-                        console.error(`Semantic Error: ${value} is not a valid boolean`);
-                        isValid = false;
-                        break;
-                    }
-                } else {
-                    console.error(`Unknown data type: ${dataType}`);
+                if (!isValueMatchingType(dataType, value)) {
+                    console.error(`Semantic Error: ${value} is not valid for type ${dataType}`);
                     isValid = false;
                     break;
                 }
             } else {
-                console.error(`Missing assignment operator for ${identifier}`);
+                console.error(`Semantic Error: Missing or invalid assignment operator for ${identifier}`);
                 isValid = false;
                 break;
             }
@@ -249,9 +218,8 @@ function semanticAnalyzer() {
                 isValid = false;
                 break;
             }
-            // No further semantic check needed for uninitialized declarations
         } else {
-            console.error(`Invalid line format: ${line}`);
+            console.error(`Semantic Error: Invalid line format "${line}"`);
             isValid = false;
             break;
         }

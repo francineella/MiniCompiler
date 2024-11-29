@@ -154,7 +154,7 @@ function syntaxAnalyzer() {
     }
 }
 
-//semantic anallyzer
+//semantic analyzer
 function semanticAnalyzer() {
     if (!syntaxPassed) {
         showOutput('Please complete syntax analysis first');
@@ -170,7 +170,7 @@ function semanticAnalyzer() {
 
             if (assign === '=') {
                 if (!isValueMatchingType(data_types, value)) {
-                    showOutput(`Semantic Error: ${value} is not valid for type ${dataType}`);
+                    showOutput(`Semantic Error: ${value} is not valid for type ${data_types}`);
                     isValid = false;
                     break;
                 }
@@ -182,7 +182,7 @@ function semanticAnalyzer() {
         } else if (tokens.length === 3) {
             const [data_types, identifier, delimiter] = tokens;
             if (delimiter !== ';') {
-                console.error(`Semantic Error: Missing semicolon for ${identifier}`);
+                showOutput(`Semantic Error: Missing semicolon for ${identifier}`);
                 isValid = false;
                 break;
             }

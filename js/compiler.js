@@ -67,22 +67,50 @@ function lexicalAnalyzer() {
     tokenList = '';
     let isValid = true;
 
-    const lines = code.split('\n');
-    for (const line of lines) {
-        const tokens = tokenize(line.trim());
-        if (!tokens) {
-            isValid = false;
-            break;
-        }
-
-        tokens.forEach(token => {
-            literalInput += token.value + '|';
-            tokenList += token.type + ' ';
-        });
+    function tokenize(line) {
+        const tokens = [];
+        const words = line.split(/\s+/); // Split line into words by whitespace
         
-        literalInput += '\n';
-        tokenList += '\n';
+        for (const word of words) {
+            if (!word) continue; // Skip empty strings
+            
+            if (TOKENS.DATA_TYPES.includes(word)) {
+                // Check if it's a valid data type
+                tokens.push({ type: 'data_type', value: word });
+            } else if (word === TOKENS.ASSIGN) {
+                // Check if it's an assignment operator
+                tokens.push({ type: 'assignment_operator', value: word });
+            } else if (word === TOKENS.SEMICOLON) {
+                // Check if it's a semicolon (delimiter)
+                tokens.push({ type: 'delimiter', value: word });
+            } else if (TOKENS.PATTERNS.INTEGER.test(word)) {
+                // Check if it's an integer value
+                tokens.push({ type: 'integer', value: word });
+            } else if (TOKENS.PATTERNS.DOUBLE.test(word)) {
+                // Check if it's a double value
+                tokens.push({ type: 'double', value: word });
+            } else if (TOKENS.PATTERNS.STRING.test(word)) {
+                // Check if it's a string value
+                tokens.push({ type: 'string', value: word });
+            } else if (TOKENS.PATTERNS.CHAR.test(word)) {
+                // Check if it's a char value
+                tokens.push({ type: 'char', value: word });
+            } else if (TOKENS.PATTERNS.BOOLEAN.test(word)) {
+                // Check if it's a boolean value
+                tokens.push({ type: 'boolean', value: word });
+            } else if (TOKENS.PATTERNS.IDENTIFIER.test(word)) {
+                // Check if it's a valid identifier
+                tokens.push({ type: 'identifier', value: word });
+            } else {
+                // If none of the above, it's an invalid token
+                showOutput(`Invalid token found: "${word}"`);
+                return null;
+            }
+        }
+        
+        return tokens;
     }
+    
 
     if (isValid) {
         lexicalPassed = true;
